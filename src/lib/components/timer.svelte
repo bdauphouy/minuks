@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let time: number;
+	import { formatTime } from '$lib/utils';
+
+	export let elapsed = 0;
 </script>
 
-<span>{time}</span>
+<span class="text-6xl">{formatTime(elapsed).string}</span>
