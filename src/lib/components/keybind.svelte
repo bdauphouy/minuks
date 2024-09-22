@@ -13,5 +13,5 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <span class="text-sm">
-	<span class="bg-secondary/10 p-2 rounded-md">{key === ' ' ? 'space' : key}</span> - {label}
+	<span class="bg-slate-800 p-2 rounded-md">{key === ' ' ? 'space' : key}</span> - {label}
 </span>

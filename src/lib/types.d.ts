@@ -1,4 +1,4 @@
 export type Record = {
-	seconds: number;
-	string: string;
+	elapsed: number;
+	createdAt: number;
 };

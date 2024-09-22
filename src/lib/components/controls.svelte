@@ -8,7 +8,7 @@
 	export let isPaused: boolean;
 </script>
 
-<div class="flex items-center gap-4 bg-secondary/10 p-2 rounded-md">
+<div class="flex items-center gap-4 bg-slate-800 p-2 rounded-md">
 	<Button on:click={() => dispatch('toggle')}>
 		{#if isPaused}
 			<Icon icon="material-symbols:play-arrow" width={24} />

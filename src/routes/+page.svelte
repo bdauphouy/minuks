@@ -4,6 +4,7 @@
 	import Keybind from '$lib/components/keybind.svelte';
 	import Record from '$lib/components/record.svelte';
 	import Timer from '$lib/components/timer.svelte';
+	import type { Record as TRecord } from '$lib/types';
 	import { formatTime } from '$lib/utils';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
@@ -11,7 +12,7 @@
 	let elapsed = 0;
 	let start = 0;
 	let isPaused = true;
-	let records: number[] = [];
+	let records: TRecord[] = [];
 
 	const loop = () => {
 		if (isPaused) return;
@@ -40,7 +41,9 @@
 	const save = () => {
 		if (elapsed === 0) return;
 
-		records = [...records, elapsed].sort((a, b) => a - b);
+		records = [...records, { elapsed, createdAt: Date.now() }].sort(
+			(a, b) => a.elapsed - b.elapsed
+		);
 
 		localStorage.setItem('records', JSON.stringify(records));
 	};
@@ -59,9 +62,9 @@
 		{ key: 'c', label: 'clear', callback: clear }
 	];
 
-	$: mean = records.reduce((a, b) => a + b, 0) / records.length;
+	$: mean = records.reduce((a, b) => a + b.elapsed, 0) / records.length;
 
-	$: median = records[Math.floor(records.length / 2)];
+	$: median = records[Math.floor(records.length / 2)]?.elapsed;
 
 	onMount(() => {
 		const storedRecords = localStorage.getItem('records');
@@ -86,8 +89,8 @@
 		{/if}
 		{#if records[0]}
 			<div in:fade class="flex gap-4">
-				<Data label="best" value={formatTime(records[0]).seconds} />
-				<Data label="worst" value={formatTime(records[records.length - 1]).seconds} />
+				<Data label="best" value={formatTime(records[0].elapsed).seconds} />
+				<Data label="worst" value={formatTime(records[records.length - 1].elapsed).seconds} />
 				<Data label="nb" value={records.length} />
 			</div>
 		{/if}
@@ -95,17 +98,16 @@
 	<Timer {elapsed} />
 </div>
 <ul class="hidden md:flex flex-col absolute top-1/2 -translate-y-1/2 right-4 gap-2">
-	{#each records.slice(0, 10) as time, index (index)}
+	{#each records.slice(0, 10) as { elapsed }, index (index)}
 		<li in:fade={{ delay: index * 50 }}>
-			<Record index={index + 1} {time} />
+			<Record index={index + 1} {elapsed} />
 		</li>
 	{/each}
 </ul>
 <div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col gap-2 items-center">
-	<a href="/records" class="text-tertiary text-sm">records</a>
 	<Controls {isPaused} on:toggle={toggle} on:reset={reset} />
 </div>
-<ul class="absolute left-0 top-1/2 -translate-y-1/2 ml-4 mb-4 hidden md:flex flex-col gap-5">
+<ul class="absolute left-0 top-1/2 -translate-y-1/2 ml-4 mb-4 hidden md:flex flex-col gap-4">
 	{#each keybinds as { key, label, callback }, index (index)}
 		<li in:fade={{ delay: index * 50 }}>
 			<Keybind {key} {label} {callback} />
