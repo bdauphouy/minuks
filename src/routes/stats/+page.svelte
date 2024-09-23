@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Chart from '$lib/components/chart.svelte';
 	import Record from '$lib/components/record.svelte';
 	import type { Record as TRecord } from '$lib/types';
 	import { onMount } from 'svelte';
@@ -59,7 +60,13 @@
 		</ul>
 	</div>
 	<div class="flex flex-col gap-2 col-span-2">
-		<h3 class="border-b border-slate-200 bg-slate-900 -mt-4 pt-4 pb-1">graphic</h3>
-		<div class="bg-slate-800 h-full rounded-md p-4 grid place-items-center">soon...</div>
+		<h3 class="border-b border-slate-200 bg-slate-900 -mt-4 pt-4 pb-1">chart</h3>
+		{#if records.length === 0}
+			<span>no data</span>
+		{:else}
+			<div class="bg-slate-800 rounded-md p-4">
+				<Chart {records} />
+			</div>
+		{/if}
 	</div>
 </div>
