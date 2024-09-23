@@ -9,7 +9,7 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div class="flex gap-8 items-center justify-between text-sm bg-slate-800 py-3 px-4 rounded-md">
+<div class="flex gap-8 items-center justify-between text-sm bg-slate-800 px-4 py-3 rounded-md">
 	<span>{index}</span>
 	<span>{formatTime(elapsed).string}</span>
 	{#if canBeDeleted}

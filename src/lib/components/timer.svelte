@@ -4,4 +4,4 @@
 	export let elapsed = 0;
 </script>
 
-<span class="text-6xl">{formatTime(elapsed).string}</span>
+<span class="text-6xl">{formatTime(elapsed, { hasDashFallback: false }).string}</span>

@@ -62,8 +62,7 @@
 		{ key: 'c', label: 'clear', callback: clear }
 	];
 
-	$: mean = records.reduce((a, b) => a + b.elapsed, 0) / records.length;
-
+	$: average = records.reduce((a, b) => a + b.elapsed, 0) / records.length;
 	$: median = records[Math.floor(records.length / 2)]?.elapsed;
 
 	onMount(() => {
@@ -77,21 +76,9 @@
 
 <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
 	<header class="mb-4 flex justify-between gap-4 items-center">
-		{#if mean}
+		{#if average}
 			<div in:fade>
-				<Data label="mean" value={formatTime(mean).seconds} />
-			</div>
-		{/if}
-		{#if median}
-			<div class="block" in:fade>
-				<Data label="med" value={formatTime(median).seconds} />
-			</div>
-		{/if}
-		{#if records[0]}
-			<div in:fade class="flex gap-4">
-				<Data label="best" value={formatTime(records[0].elapsed).seconds} />
-				<Data label="worst" value={formatTime(records[records.length - 1].elapsed).seconds} />
-				<Data label="nb" value={records.length} />
+				<Data label="average" value={formatTime(average).seconds} />
 			</div>
 		{/if}
 	</header>
@@ -107,7 +94,7 @@
 <div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col gap-2 items-center">
 	<Controls {isPaused} on:toggle={toggle} on:reset={reset} />
 </div>
-<ul class="absolute left-0 top-1/2 -translate-y-1/2 ml-4 mb-4 hidden md:flex flex-col gap-4">
+<ul class="absolute left-0 top-1/2 -translate-y-1/2 ml-4 mb-4 hidden md:flex flex-col gap-5">
 	{#each keybinds as { key, label, callback }, index (index)}
 		<li in:fade={{ delay: index * 50 }}>
 			<Keybind {key} {label} {callback} />
