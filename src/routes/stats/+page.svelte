@@ -18,7 +18,7 @@
 	$: totalTime = records.reduce((acc, { elapsed }) => acc + elapsed, 0);
 
 	const remove = (e: CustomEvent) => {
-		records = records.filter((_, i) => i !== e.detail - 1);
+		records = records.filter(({ createdAt }) => createdAt !== e.detail);
 
 		localStorage.setItem('records', JSON.stringify(records));
 	};
@@ -63,9 +63,9 @@
 			<span class="bg-slate-800 py-3 px-4 rounded-md">no records yet</span>
 		{/if}
 		<ul class="flex flex-col gap-2 overflow-y-auto pb-4 lg:pb-0">
-			{#each filteredRecords as { elapsed }, index (index)}
+			{#each filteredRecords as record, index (index)}
 				<li in:fade={{ delay: index * 50 }}>
-					<Record index={index + 1} {elapsed} canBeDeleted on:delete={remove} />
+					<Record index={index + 1} {record} canBeDeleted on:delete={remove} />
 				</li>
 			{/each}
 		</ul>

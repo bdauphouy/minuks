@@ -63,7 +63,8 @@
 	];
 
 	$: average = records.reduce((a, b) => a + b.elapsed, 0) / records.length;
-	$: median = records[Math.floor(records.length / 2)]?.elapsed;
+
+	$: sortedRecords = records.sort((a, b) => a.elapsed - b.elapsed);
 
 	onMount(() => {
 		const storedRecords = localStorage.getItem('records');
@@ -85,9 +86,9 @@
 	<Timer {elapsed} />
 </div>
 <ul class="hidden md:flex flex-col absolute top-1/2 -translate-y-1/2 right-4 gap-2">
-	{#each records.slice(0, 10) as { elapsed }, index (index)}
+	{#each sortedRecords.slice(0, 10) as record, index (index)}
 		<li in:fade={{ delay: index * 50 }}>
-			<Record index={index + 1} {elapsed} />
+			<Record index={index + 1} {record} />
 		</li>
 	{/each}
 </ul>
