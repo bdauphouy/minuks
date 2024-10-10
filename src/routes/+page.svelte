@@ -92,7 +92,9 @@
 		</li>
 	{/each}
 </ul>
-<div class="absolute left-1/2 -translate-x-1/2 bottom-4 flex flex-col gap-2 items-center">
+<div
+	class="absolute md:left-1/2 md:-translate-x-1/2 bottom-4 flex gap-2 md:justify-center w-full px-4 md:px-0 h-20 md:h-auto md:w-auto"
+>
 	<Controls {isPaused} on:toggle={toggle} on:reset={reset} />
 </div>
 <ul class="absolute left-0 top-1/2 -translate-y-1/2 ml-4 mb-4 hidden md:flex flex-col gap-5">
